@@ -1,92 +1,100 @@
-Data Analysis with BigQuery
 
-📌 Overview
-This project focuses on the extraction, transformation, and analysis of data from the public dataset Chicago Taxi Trips available on Google BigQuery.
+# **README.md** — Data Analysis with BigQuery
 
-The main goal is to query, process, and save the data into CSV files for further analysis, such as creating dashboards and reports.
+## **📌 Overview**
+This project performs **extraction, transformation, and analysis of data** from the public dataset **Chicago Taxi Trips** available in **Google BigQuery**.
 
-📂 Project Structure
+The goal is to **query, process, and save the data** into CSV files for further analysis, dashboard creation, and reporting.
+
+---
+
+## **📂 Project Structure**
+```
 .
 ├── generate_csvs.py          # Main script for querying and generating CSVs
-├── data/                     # Folder where CSV files will be saved
-│   ├── travells_per_year.csv     # Total number of trips per year
-│   ├── hour_weekday.csv         # Number of trips by hour and weekday
-│   └── taxi_trips_sample.csv    # A sample of 5000 trips for analysis
+├── data/                     # Folder where CSV files are saved
+│   ├── travells_per_year.csv     # Total trips per year
+│   ├── hour_weekday.csv         # Number of trips per hour and weekday
+│   └── taxi_trips_sample.csv    # Sample of 5000 trips for analysis
 ├── README.md                # Project documentation
-🛠️ Technologies Used
-Python 3.10+
+```
 
-Google BigQuery → Data querying
+---
 
-Pandas → Data manipulation and export
+## **🛠️ Technologies Used**
+- **Python 3.10+**
+- **Google BigQuery** → Data querying
+- **Pandas** → Data manipulation and export
+- **Google Cloud SDK** → Authentication for BigQuery
 
-Google Cloud SDK → BigQuery authentication
+---
 
-📥 Prerequisites
-Create a Google Cloud Project
+## **📥 Prerequisites**
 
-Go to https://console.cloud.google.com
+### **1. Create a project in Google Cloud**
+- Go to [https://console.cloud.google.com](https://console.cloud.google.com)
+- Create a new project
+- Enable the **BigQuery API**
 
-Create a new project.
+### **2. Configure authentication**
+- Generate a **service account key** in Google Cloud:
+  - Go to **IAM & Admin → Service Accounts**
+  - Click **Create Key**
+  - Choose **JSON**
+  - Download the file.
 
-Enable the BigQuery API.
+- Set the environment variable:
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="path/to/your_key.json"
+```
 
-Configure Authentication
+On Windows (PowerShell):
+```powershell
+setx GOOGLE_APPLICATION_CREDENTIALS "C:\path\to\your_key.json"
+```
 
-Generate a service account key in Google Cloud:
+---
 
-Go to IAM & Admin → Service Accounts.
+## **⚡ How to Run the Project**
 
-Click Create Key.
-
-Choose JSON.
-
-Download the file.
-
-Set up the environment variable:
-
-Linux/Mac: export GOOGLE_APPLICATION_CREDENTIALS="path/to/your_key.json"
-
-Windows (PowerShell): setx GOOGLE_APPLICATION_CREDS "C:\path\to\your_key.json"
-
-⚡ How to Run the Project
-Create a Virtual Environment
-
+### **1. Create a virtual environment**
+```bash
 python -m venv venv
-
 source venv/bin/activate      # Linux/Mac
+venv\Scripts\activate       # Windows
+```
 
-venv\Scripts\activate         # Windows
-
-Install Dependencies
-
+### **2. Install dependencies**
+```bash
 pip install --upgrade pip
-
 pip install google-cloud-bigquery pandas
+```
 
-Run the Script
-
+### **3. Run the script**
+```bash
 python generate_csvs.py
+```
 
-📊 Script Functionalities
-The generate_csvs.py script executes three main queries:
+---
 
-Total trips per year
+## **📊 Script Functionalities**
+The **generate_csvs.py** script runs three main queries:
 
-SQL
-
+### **1. Total trips per year**
+```sql
 SELECT 
     EXTRACT(YEAR FROM trip_start_timestamp) AS year,
     COUNT(*) AS num_trips
 FROM `bigquery-public-data.chicago_taxi_trips.taxi_trips`
 GROUP BY year
 ORDER BY year;
-📌 Saved to: data/travells_per_year.csv
+```
+📌 Saved to: `data/travells_per_year.csv`
 
-Trips by hour and weekday
+---
 
-SQL
-
+### **2. Trips per hour and weekday**
+```sql
 SELECT 
     EXTRACT(HOUR FROM trip_start_timestamp) AS hour,
     EXTRACT(DAYOFWEEK FROM trip_start_timestamp) AS weekday,
@@ -95,12 +103,13 @@ FROM `bigquery-public-data.chicago_taxi_trips.taxi_trips`
 WHERE trip_start_timestamp >= '2019-01-01'
 GROUP BY hour, weekday
 ORDER BY weekday, hour;
-📌 Saved to: data/hour_weekday.csv
+```
+📌 Saved to: `data/hour_weekday.csv`
 
-Sample of 5000 trips
+---
 
-SQL
-
+### **3. Sample of 5000 trips**
+```sql
 SELECT 
     trip_start_timestamp,
     trip_miles,
@@ -109,21 +118,30 @@ FROM `bigquery-public-data.chicago_taxi_trips.taxi_trips`
 WHERE fare IS NOT NULL
     AND trip_miles IS NOT NULL
 LIMIT 5000;
-📌 Saved to: data/taxi_trips_sample.csv
+```
+📌 Saved to: `data/taxi_trips_sample.csv`
 
-📂 Expected Output
-After running the script, the data/ folder will be created with the following CSV files:
+---
 
+## **📂 Expected Output**
+After running the script, the `data/` folder will be created with the CSV files:
+
+```
 data/
 ├── travells_per_year.csv
 ├── hour_weekday.csv
 └── taxi_trips_sample.csv
-🚀 Next Steps
-Create exploratory plots using Matplotlib and Seaborn.
+```
 
-Develop an interactive dashboard with Plotly Dash.
+---
 
-Generate automated reports in PDF format.
+## **🚀 Next Steps**
+- Create exploratory charts using **Matplotlib** and **Seaborn**
+- Develop an **interactive dashboard** with **Plotly Dash**
+- Generate automatic **PDF reports**
 
-👨‍💻 Author
-Carlos Lacerda
+---
+
+## **👨‍💻 Author**
+**Carlos Lacerda**  
+
